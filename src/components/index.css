@@ -1,0 +1,9 @@
+:root {
+  --shadow: 0 2px 23px 0 rgba(0, 0, 0, 0.1), 0 2px 49px 0 rgba(0, 0, 0, 0.1);
+  --primary-color: #6464c8;
+  --secondary-color: #3c3c78;
+}
+
+* {
+  box-sizing: border-box;
+}
