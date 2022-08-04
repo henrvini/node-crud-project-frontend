@@ -7,7 +7,9 @@ import Nav from "../../components/nav/Nav";
 import Main from "../../components/main/Main";
 import Footer from "../../components/footer/Footer";
 import api from "../../services/api";
+import RecommendIcon from "@mui/icons-material/Recommend";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 import {
   Paper,
@@ -48,6 +50,24 @@ function AllContents() {
     }
   }
 
+  async function handleSubmitStatus(data) {
+    let newStatus = data.status;
+    newStatus === false ? (newStatus = true) : (newStatus = false);
+
+    const newData = {
+      id: data.id,
+      title: data.title,
+      content: data.content,
+      status: newStatus,
+    };
+
+    const res = await api.put("/contents/status", newData);
+
+    res.status === 200
+      ? (window.location.href = `/allContents`)
+      : alert("Failed");
+  }
+
   async function handleDelete(content_id) {
     confirmAlert({
       title: "Attention!",
@@ -84,6 +104,7 @@ function AllContents() {
               <TableRow>
                 <TableCell align="left">Title</TableCell>
                 <TableCell align="left">Description</TableCell>
+                <TableCell align="left">Status</TableCell>
                 <TableCell align="left">Created at</TableCell>
                 <TableCell align="center">Options</TableCell>
               </TableRow>
@@ -93,6 +114,17 @@ function AllContents() {
                 <TableRow key={row.id}>
                   <TableCell align="left">{row.title}</TableCell>
                   <TableCell align="left">{row.description}</TableCell>
+                  {row.status ? (
+                    <TableCell align="left">
+                      <RecommendIcon onClick={() => handleSubmitStatus(row)} />
+                    </TableCell>
+                  ) : (
+                    <TableCell align="left">
+                      <HighlightOffIcon
+                        onClick={() => handleSubmitStatus(row)}
+                      />
+                    </TableCell>
+                  )}
                   <TableCell align="left">
                     {new Date(row.createdAt).toLocaleString("pt-br")}
                   </TableCell>
